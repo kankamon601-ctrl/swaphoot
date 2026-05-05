@@ -58,6 +58,7 @@ function Home() {
   const [search, setSearch] = useState('');
   const [location, setLocation] = useState('');
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -70,7 +71,7 @@ function Home() {
   }, [activeCategory, nearbyOnly]);
 
   const loadItems = async (pageNum, replace) => {
-    if (replace) setLoading(true); else setLoadingMore(true);
+    if (replace) { setLoading(true); setLoadError(false); } else setLoadingMore(true);
     try {
       const extra = {};
       if (activeCategory !== 'all') extra.category = activeCategory;
@@ -96,6 +97,7 @@ function Home() {
       }
     } catch (err) {
       console.error('Failed to load items:', err);
+      if (replace) setLoadError(true);
     }
     setLoading(false);
     setLoadingMore(false);
@@ -199,6 +201,14 @@ function Home() {
       {loading ? (
         <div className="state-block">
           <p className="state-text">Loading items…</p>
+        </div>
+      ) : loadError ? (
+        <div className="state-block">
+          <h3 className="state-heading">Something went wrong</h3>
+          <p className="state-text">Could not load items. Please try again.</p>
+          <button className="btn btn-outline" onClick={() => loadItems(1, true)}>
+            Retry
+          </button>
         </div>
       ) : items.length === 0 ? (
         <div className="state-block">

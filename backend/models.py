@@ -103,17 +103,18 @@ class Item(db.Model):
     )
     title = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text, default="")
-    category = db.Column(db.String(100), nullable=False)
+    category = db.Column(db.String(100), nullable=False, index=True)
     condition = db.Column(db.String(50), nullable=False)  # new, like_new, good, fair
     estimated_value = db.Column(db.Float, default=0.0)
-    status = db.Column(db.String(20), default="active")  # active, pending, swapped
+    status = db.Column(db.String(20), default="active", index=True)  # active, pending, swapped
     created_at = db.Column(
         db.DateTime, default=lambda: datetime.now(timezone.utc)
     )
 
     # Relationships
     images = db.relationship(
-        "ItemImage", backref="item", lazy="dynamic", cascade="all, delete-orphan"
+        "ItemImage", backref="item", lazy="select",
+        order_by="ItemImage.sort_order", cascade="all, delete-orphan",
     )
 
     def to_dict(self):

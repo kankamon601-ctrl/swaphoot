@@ -3,6 +3,7 @@ from math import radians, cos, sin, asin, sqrt
 
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required
+from sqlalchemy.orm import contains_eager, joinedload
 
 from models import db, Item, ItemImage, User
 from extensions import current_user_id
@@ -27,7 +28,9 @@ def _get_item_by_public_id(public_id):
 # ---------------------------------------------------------------------------
 @items_bp.route("", methods=["GET"])
 def list_items():
-    query = Item.query.filter_by(status="active")
+    query = Item.query.options(
+        joinedload(Item.owner), joinedload(Item.images),
+    ).filter_by(status="active")
 
     # Optional filters
     category = request.args.get("category")
@@ -82,7 +85,9 @@ def list_items():
 @jwt_required()
 def my_items():
     user_id = current_user_id()
-    items = Item.query.filter_by(user_id=user_id).order_by(
+    items = Item.query.options(
+        joinedload(Item.owner), joinedload(Item.images),
+    ).filter_by(user_id=user_id).order_by(
         Item.created_at.desc()
     ).all()
 
@@ -105,6 +110,7 @@ def nearby_items():
     query = (
         Item.query
         .join(User, Item.user_id == User.id)
+        .options(contains_eager(Item.owner), joinedload(Item.images))
         .filter(
             Item.status == "active",
             User.latitude.isnot(None),
