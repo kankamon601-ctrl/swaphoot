@@ -27,6 +27,6 @@ COPY . .
 # Fly will inject PORT=8080 (matches fly.toml internal_port).
 EXPOSE 8080
 
-# 2 gunicorn workers is enough for a 256MB Fly machine. Bump later if needed.
+# 1 gunicorn worker keeps memory under the 256MB Fly limit.
 # Access logs go to stdout so they show up in `fly logs`.
-CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${PORT:-8080} --workers 2 --access-logfile - 'app:create_app(\"production\")'"]
+CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${PORT:-8080} --workers 1 --access-logfile - 'app:create_app(\"production\")'"]
