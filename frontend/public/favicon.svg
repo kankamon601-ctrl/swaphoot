@@ -1,9 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="6" fill="#2E7D32"/>
-  <text x="4" y="24"
-        font-family="'Lora', 'Palatino', Georgia, serif"
-        font-weight="700"
-        font-size="22"
-        fill="#fff"
-        letter-spacing="-1">SH</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Background -->
+  <rect width="64" height="64" rx="14" fill="#2E7D32"/>
+  <!-- Ear tufts -->
+  <polygon points="14,12 20,24 8,24" fill="#1B5E20"/>
+  <polygon points="50,12 56,24 44,24" fill="#1B5E20"/>
+  <!-- Face -->
+  <ellipse cx="32" cy="38" rx="22" ry="20" fill="#E8F5E9"/>
+  <!-- Left eye -->
+  <circle cx="24" cy="34" r="8" fill="#fff" stroke="#1B5E20" stroke-width="1.5"/>
+  <circle cx="25" cy="33" r="4" fill="#1B5E20"/>
+  <circle cx="26.5" cy="31.5" r="1.2" fill="#fff"/>
+  <!-- Right eye -->
+  <circle cx="40" cy="34" r="8" fill="#fff" stroke="#1B5E20" stroke-width="1.5"/>
+  <circle cx="41" cy="33" r="4" fill="#1B5E20"/>
+  <circle cx="42.5" cy="31.5" r="1.2" fill="#fff"/>
+  <!-- Beak -->
+  <polygon points="32,40 28,47 36,47" fill="#FF9800"/>
 </svg>
