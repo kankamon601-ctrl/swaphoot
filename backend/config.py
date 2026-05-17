@@ -14,6 +14,11 @@ class Config:
         "DATABASE_URL", "sqlite:///swapmart_dev.db"
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+    # Recycle stale connections before Supabase/PgBouncer drops them,
+    # and verify each connection is alive before handing it to a request.
+    SQLALCHEMY_POOL_RECYCLE = 280
+    SQLALCHEMY_POOL_PRE_PING = True
     JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "dev-secret-change-me")
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=7)
 
